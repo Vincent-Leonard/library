@@ -27,7 +27,7 @@ class LogController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -38,7 +38,7 @@ class LogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -49,7 +49,9 @@ class LogController extends Controller
      */
     public function show($id)
     {
-        //
+        $book = Book::find($id);
+        $users = User::all()->where('is_admin', 0);
+        return view('book.borrow', compact('book', 'users'));
     }
 
     /**
@@ -91,13 +93,14 @@ class LogController extends Controller
         $log = Book::findOrFail($request->id);
         $currentDate = Carbon::now();
         $returnDate = Carbon::now()->addDays(7);
-        $user = Auth::user()->id;
+        // $user = Auth::user()->id;
+        $user = $request->user_id;
         $log->users()->attach([$user => ['borrow_date' => $currentDate, 'due_date' => $returnDate]]);
         // dd($log);
         // dd($request);
         $log->update([
             'is_borrowed' => '1',
         ]);
-        return redirect()->back()->with('Success');
+        return redirect()->route('book.index')->with('Success');
     }
 }

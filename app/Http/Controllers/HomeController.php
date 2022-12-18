@@ -26,7 +26,7 @@ class HomeController extends Controller
     {
         //
         if(Auth::check()){
-            return redirect()->route('booklog.index');
+            return redirect()->route('book.index');
         }
         return redirect()->route('login');
     }

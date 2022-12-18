@@ -17,6 +17,6 @@ class Book extends Model
     ];
 
     public function users() {
-        return $this->belongsToMany(User::class, 'logs', 'user_id', 'book_id')->withPivot('borrow_date', 'due_date')->withTimeStamps();
+        return $this->belongsToMany(User::class, 'logs', 'book_id', 'user_id')->withPivot('borrow_date', 'due_date')->withTimeStamps();
     }
 }

@@ -19,11 +19,7 @@
                             <th scope="col">Title</th>
                             <th scope="col">Author</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Borrow Date</th>
-                            <th scope="col">Due Date</th>
-                            <th scope="col">Borrow</th>
-                            <th scope="col">Edit</th>
-                            <th scope="col">Delete</th>
+                            <th scope="col">Details</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,31 +34,12 @@
                                         Not Available
                                     @endif
                                 </td>
-                                {{-- <td>{{$book->users->borrow_date}}</td> --}}
                                 @auth
                                 <td>
-                                    @if ($book->is_borrowed == 0)
                                     <form action="{{ route('book.show', $book) }}" method="GET">
                                         @csrf
                                         <input name="id" type="hidden" value="{{ $book->id }}">
                                         <button class="btn btn-primary" type="submit">Details</button>
-                                    </form>
-                                    @elseif ($book->is_borrowed == 1)
-                                    -
-                                    @endif
-                                </td>
-                                <td>
-                                    <form action="{{route('book.edit', $book)}}" method="POST">
-                                        {{csrf_field()}}
-                                        <input type="hidden" name="_method" value="GET">
-                                        <button type="submit" class="btn btn-primary">Edit</button>
-                                    </form>
-                                </td>
-                                <td>
-                                    <form action="{{route('book.destroy', $book)}}" method="POST">
-                                        {{csrf_field()}}
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
                                 </td>
                                 @endauth

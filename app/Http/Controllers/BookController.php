@@ -71,7 +71,15 @@ class BookController extends Controller
     {
         //
         $book = Book::find($id);
-        return view('book.detail', compact('book'));
+        $user = Auth::user();
+        $log = Logs::all()->where('book_id', $id)->last();
+        $userBorrow = '';
+        if ($log != null){
+            $logUser = $log->user_id;
+            $userBorrow = User::all()->where('id', $logUser)->first();
+        }
+        // dd($userBorrow);
+        return view('book.detail', compact('book', 'user', 'log', 'userBorrow'));
     }
 
     /**
