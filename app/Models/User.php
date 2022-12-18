@@ -52,7 +52,7 @@ class User extends Authenticatable
         return false;
     }
 
-    public function book() {
+    public function books() {
         return $this->belongsTo(survey::class, 'book_id', 'id');
     }
 }

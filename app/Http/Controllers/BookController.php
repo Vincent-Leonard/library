@@ -4,9 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\User;
+use App\Models\Logs;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class BookController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,6 +25,8 @@ class BookController extends Controller
     {
         //
         $books = Book::all();
+        // $logs = Log::all()->where('lecturer_id', '<>', null);
+        // dd($books);
         return view('book.index', compact('books'));
     }
 
@@ -26,7 +37,8 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        // $users = User::all()->where('lecturer_id', '<>', null);
+        return view('book.create');
     }
 
     /**
@@ -37,7 +49,16 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $book = Book::create([
+            'title' => $request->title,
+            'author' => $request->author,
+            'synopsis' => $request->synopsis
+        ]);
+
+        // $event->users()->attach($request->user_id);
+        // $event->users()->attach(Auth::user()->id);
+        return redirect()->route('book.index');
     }
 
     /**
@@ -49,6 +70,8 @@ class BookController extends Controller
     public function show($id)
     {
         //
+        $book = Book::find($id);
+        return view('book.detail', compact('book'));
     }
 
     /**
@@ -59,7 +82,8 @@ class BookController extends Controller
      */
     public function edit($id)
     {
-        //
+        $book = Book::Find($id);
+        return view('book.edit', compact('book'));
     }
 
     /**
@@ -69,9 +93,16 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Book $book)
     {
-        //
+        $book->update([
+            'title' => $request->title,
+            'author' => $request->author,
+            'synopsis' => $request->synopsis,
+            'is_borrowed' => $request->is_borrowed,
+        ]);
+
+        return redirect()->route('book.index');
     }
 
     /**
@@ -83,8 +114,8 @@ class BookController extends Controller
     public function destroy($id)
     {
         $book = Book::Find($id);
-        // $book->users()->detach();
+        $book->users()->detach();
         $book->delete();
-        return redirect()->back()->with('Success', 'Book Deleted');
+        return redirect()->route('book.index')->with('Success', 'Book Deleted');
     }
 }

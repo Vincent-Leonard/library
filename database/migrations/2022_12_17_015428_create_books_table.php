@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string("title");
             $table->string("author");
+            $table->text("synopsis");
             $table->enum('is_borrowed', ['0', '1'])
                 ->default('0')->comment('0 = notBorrowed, 1 = Borrowed');
             $table->timestamps();

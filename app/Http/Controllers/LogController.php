@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Book_Logs;
+use App\Models\Book;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
-class BookLogController extends Controller
+class LogController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -81,5 +84,20 @@ class BookLogController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function borrow(Request $request)
+    {
+        $log = Book::findOrFail($request->id);
+        $currentDate = Carbon::now();
+        $returnDate = Carbon::now()->addDays(7);
+        $user = Auth::user()->id;
+        $log->users()->attach([$user => ['borrow_date' => $currentDate, 'due_date' => $returnDate]]);
+        // dd($log);
+        // dd($request);
+        $log->update([
+            'is_borrowed' => '1',
+        ]);
+        return redirect()->back()->with('Success');
     }
 }
