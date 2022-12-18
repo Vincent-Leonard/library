@@ -7,9 +7,11 @@
             </div>
             <div class="row">
                 @auth
-                <div class="col-md-2 offset-md-10">
-                    <a href="{{route('book.create')}}" class="btn btn-primary btn-block" role="button" aria-pressed="true">Add Book</a>
-                </div>
+                    @if ($user->is_admin == 1)
+                    <div class="col-md-2 offset-md-10">
+                        <a href="{{route('book.create')}}" class="btn btn-primary btn-block" role="button" aria-pressed="true">Add Book</a>
+                    </div>
+                    @endif
                 @endauth
             </div>
             <div class="row" style="margin-top: 30px;">

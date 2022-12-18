@@ -25,9 +25,10 @@ class BookController extends Controller
     {
         //
         $books = Book::all();
+        $user = Auth::user();
         // $logs = Log::all()->where('lecturer_id', '<>', null);
         // dd($books);
-        return view('book.index', compact('books'));
+        return view('book.index', compact('books', 'user'));
     }
 
     /**
